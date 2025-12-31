@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -5,13 +6,14 @@ import {
   ViewChild,
   OnInit
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [],
+  imports: [RouterLink, NgIf],
   templateUrl: './game.html',
-  styleUrl: './game.css',
+  styleUrls: ['./game.css'],
 })
 export class Game implements OnInit {
 
@@ -59,6 +61,8 @@ export class Game implements OnInit {
     // déplacement joueur
     if (this.keys['ArrowLeft']) this.player.x -= this.player.speed;
     if (this.keys['ArrowRight']) this.player.x += this.player.speed;
+    // Pour que le joueur ne depasse pas le canvas
+    this.player.x = Math.max(0, Math.min(this.player.x, 560));
 
     // tir (barre espace)
     if (this.keys[' ']) {
@@ -115,7 +119,6 @@ export class Game implements OnInit {
 
   endGame(): void {
     this.gameOver = true;
-    alert('Game Over');
   }
 
   spawnEnemy(): void {
@@ -146,7 +149,7 @@ export class Game implements OnInit {
     this.ctx.clearRect(0, 0, 600, 400);
 
     // joueur
-    this.ctx.fillStyle = 'white';
+    this.ctx.fillStyle = 'black';
     this.ctx.fillRect(
       this.player.x,
       this.player.y,
@@ -159,6 +162,13 @@ export class Game implements OnInit {
     this.bullets.forEach(b =>
       this.ctx.fillRect(b.x, b.y, 4, 10)
     );
+
+    // ennemis
+    this.ctx.fillStyle = 'green';
+    this.enemies.forEach(e =>
+      this.ctx.fillRect(e.x, e.y, e.width, e.height)
+    );
+
   }
 
   @HostListener('window:keydown', ['$event'])
