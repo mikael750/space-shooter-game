@@ -1,8 +1,12 @@
-<canvas #gameCanvas width="600" height="400"></canvas>
-<p>Score : {{ score }} | Vies : {{ lives }}</p>
+<div class="game-container">
 
-<div *ngIf="gameOver" class="game-over">
-  <h2>GAME OVER</h2>
-  <p>Score final : {{ score }}</p>
-  <button routerLink="/">Retour au menu</button>
+  <canvas #gameCanvas width="600" height="400"></canvas>
+  <p>Score : {{ score }} | Vies : {{ lives }}</p>
+
+  <div *ngIf="gameOver" class="game-over">
+    <h2>GAME OVER</h2>
+    <p>Score final : {{ score }}</p>
+    <button routerLink="/">Retour au menu</button>
+  </div>
+
 </div>

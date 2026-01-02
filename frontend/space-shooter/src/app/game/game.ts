@@ -1,9 +1,10 @@
-import { NgIf } from '@angular/common';
+import { NgIf, isPlatformBrowser } from '@angular/common';
 import {
   Component,
   ElementRef,
   HostListener,
   ViewChild,
+  Inject, PLATFORM_ID,
   OnInit
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -19,6 +20,8 @@ export class Game implements OnInit {
 
   @ViewChild('gameCanvas', { static: true })
   canvas!: ElementRef<HTMLCanvasElement>;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
   ctx!: CanvasRenderingContext2D;
 
@@ -43,8 +46,10 @@ export class Game implements OnInit {
   enemies: any[] = [];
 
   ngOnInit(): void {
-    this.ctx = this.canvas.nativeElement.getContext('2d')!;
-    this.gameLoop();
+    if (isPlatformBrowser(this.platformId)) {
+      this.ctx = this.canvas.nativeElement.getContext('2d')!;
+      this.gameLoop();
+    }
   }
 
   gameLoop(): void {
